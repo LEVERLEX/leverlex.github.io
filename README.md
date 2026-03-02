@@ -1,2 +1,2 @@
 # leverlexdigitals.github.io
-Official GitHub Pages site for Leverlex
+Official GitHub Pages site for Leverlexdigitals
