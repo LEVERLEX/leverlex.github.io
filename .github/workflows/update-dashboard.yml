@@ -152,15 +152,32 @@ jobs:
                 document.getElementById('pr-count').textContent = prs.length;
               }
               
-              // Fetch repository info for more stats
-              const repoResponse = await fetch(\`\${apiBase}/repos/\${repo}\`);
-              if (repoResponse.ok) {
-                const repoData = await repoResponse.json();
-                // Could add more dynamic stats here if needed
+              // Fetch latest commit
+              const commitsResponse = await fetch(\`\${apiBase}/repos/\${repo}/commits?per_page=1\`);
+              if (commitsResponse.ok) {
+                const commits = await commitsResponse.json();
+                if (commits.length > 0) {
+                  document.getElementById('last-commit').textContent = commits[0].commit.message;
+                }
               }
+              
+              // Fetch contributors count
+              const contributorsResponse = await fetch(\`\${apiBase}/repos/\${repo}/contributors\`);
+              if (contributorsResponse.ok) {
+                const contributors = await contributorsResponse.json();
+                document.getElementById('contributor-count').textContent = contributors.length;
+              }
+              
+              // Update last update time
+              const lastUpdate = new Date().toUTCString();
+              document.getElementById('last-update').textContent = lastUpdate;
+              
             } catch (error) {
-              console.log('Stats update error:', error);
+              console.error('Stats update error:', error);
               // Silently fail - use server-rendered values
+              if (document.getElementById('last-update').textContent === 'Loading...') {
+                document.getElementById('last-update').textContent = new Date().toUTCString();
+              }
             }
           }
           
@@ -170,6 +187,9 @@ jobs:
           } else {
             updateStats();
           }
+          
+          // Refresh stats every 30 minutes to avoid rate limiting
+          setInterval(updateStats, 30 * 60 * 1000);
           </script>
 
           </body>
