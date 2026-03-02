@@ -19,6 +19,8 @@
     .red { background: #dc2626; }
     .badge { display: inline-block; margin-right: 0.5rem; vertical-align: middle; }
     a { color: #3b82f6; text-decoration: none; }
+    .stat-value { font-weight: bold; color: #111827; }
+    .workflow-badges { margin-top: 1rem; }
   </style>
 </head>
 <body>
@@ -26,9 +28,13 @@
 <header>
   <h1>LEVERLEX Digital Platform Status Dashboard</h1>
   <p>Real-time overview of site, automation, and workflow modules</p>
-  <img src="https://img.shields.io/badge/status-active-success" alt="Status Badge" class="badge">
-  <img src="https://img.shields.io/badge/deployment-github--pages-blue" alt="Deployment Badge" class="badge">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="License Badge" class="badge">
+  <p style="font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: <span id="last-update">Loading...</span></p>
+  <div class="workflow-badges">
+    <img src="https://img.shields.io/badge/status-active-success" alt="Status Badge" class="badge">
+    <img src="https://img.shields.io/badge/deployment-github--pages-blue" alt="Deployment Badge" class="badge">
+    <img src="https://img.shields.io/badge/license-MIT-green" alt="License Badge" class="badge">
+    <img src="https://github.com/LEVERLEX/leverlex.github.io/actions/workflows/update-dashboard.yml/badge.svg" alt="Dashboard Update Workflow" class="badge">
+  </div>
 </header>
 
 <section>
@@ -36,7 +42,7 @@
   <ul>
     <li><span class="status green"></span>GitHub Pages URL: <a href="https://leverlex.github.io" target="_blank">https://leverlex.github.io</a></li>
     <li><span class="status green"></span>Deployment Status: Active</li>
-    <li><span class="status green"></span>Last Merge: Copilot Automation PR merged</li>
+    <li><span class="status green"></span>Last Merge: <span class="stat-value" id="last-commit">Loading...</span></li>
     <li><span class="status green"></span>Build Check: Passed</li>
   </ul>
 </section>
@@ -45,8 +51,8 @@
   <h2>Repository</h2>
   <ul>
     <li><span class="status green"></span>Branch: main</li>
-    <li><span class="status green"></span>Commits: 7</li>
-    <li><span class="status green"></span>Contributors: 1</li>
+    <li><span class="status green"></span>Commits: <span class="stat-value" id="commit-count">2</span></li>
+    <li><span class="status green"></span>Contributors: <span class="stat-value" id="contributor-count">2</span></li>
     <li><span class="status green"></span>License: MIT</li>
     <li><span class="status yellow"></span>Pinned: Pending</li>
     <li><span class="status green"></span>Core Files: index.html, _config.yml, robots.txt, sitemap.xml</li>
@@ -56,9 +62,10 @@
 <section>
   <h2>Automation Workflow</h2>
   <ul>
-    <li><span class="status green"></span>Active PRs: 0</li>
+    <li><span class="status green"></span>Open Pull Requests: <span class="stat-value" id="pr-count">0</span></li>
     <li><span class="status green"></span>Automation Modules Deployed</li>
     <li><span class="status green"></span>Markdown Formatting Modules Active</li>
+    <li><span class="status green"></span>Dashboard Auto-Update: Active</li>
     <li><span class="status yellow"></span>Workflow ready for CI/CD integration</li>
   </ul>
 </section>
@@ -83,6 +90,65 @@
     <li><span class="status yellow"></span>Add CTA buttons / portfolio links</li>
   </ul>
 </section>
+
+<script>
+// Client-side real-time updates using GitHub API
+async function updateStats() {
+  const repo = 'LEVERLEX/leverlex.github.io';
+  const apiBase = 'https://api.github.com';
+  
+  try {
+    // Fetch open PRs
+    const prsResponse = await fetch(`${apiBase}/repos/${repo}/pulls?state=open`);
+    if (prsResponse.ok) {
+      const prs = await prsResponse.json();
+      document.getElementById('pr-count').textContent = prs.length;
+    }
+    
+    // Fetch repository info for commits and contributors
+    const repoResponse = await fetch(`${apiBase}/repos/${repo}`);
+    if (repoResponse.ok) {
+      const repoData = await repoResponse.json();
+      // Update last update time
+      const lastUpdate = new Date().toUTCString();
+      document.getElementById('last-update').textContent = lastUpdate;
+    }
+    
+    // Fetch latest commit
+    const commitsResponse = await fetch(`${apiBase}/repos/${repo}/commits?per_page=1`);
+    if (commitsResponse.ok) {
+      const commits = await commitsResponse.json();
+      if (commits.length > 0) {
+        document.getElementById('last-commit').textContent = commits[0].commit.message;
+      }
+    }
+    
+    // Fetch contributors count
+    const contributorsResponse = await fetch(`${apiBase}/repos/${repo}/contributors`);
+    if (contributorsResponse.ok) {
+      const contributors = await contributorsResponse.json();
+      document.getElementById('contributor-count').textContent = contributors.length;
+    }
+    
+  } catch (error) {
+    console.log('Stats update error:', error);
+    // Silently fail - use server-rendered values
+    if (document.getElementById('last-update').textContent === 'Loading...') {
+      document.getElementById('last-update').textContent = new Date().toUTCString();
+    }
+  }
+}
+
+// Update stats on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', updateStats);
+} else {
+  updateStats();
+}
+
+// Refresh stats every 5 minutes
+setInterval(updateStats, 5 * 60 * 1000);
+</script>
 
 </body>
 </html>
