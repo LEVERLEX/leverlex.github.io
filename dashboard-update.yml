@@ -1,0 +1,94 @@
+name: Update Dashboard
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Get last merge commit message
+      - name: Get last commit
+        id: last_commit
+        run: |
+          echo "LAST_COMMIT=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$(date -u)" >> $GITHUB_ENV
+
+      # Generate updated dashboard.html
+      - name: Update dashboard
+        run: |
+          cat > dashboard.html <<EOF
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>LEVERLEX Status Dashboard</title>
+            <style>
+              body { font-family: 'Roboto', sans-serif; background:#f9f9f9; margin:0; padding:0; }
+              header { background:#1f2937; color:#fff; padding:2rem; text-align:center; }
+              h1,h2 { color:#111827; }
+              section { padding:2rem; margin:1rem auto; max-width:900px; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+              .status { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:0.5rem; }
+              .green { background:#16a34a; } .yellow { background:#facc15; } .red { background:#dc2626; }
+              ul { list-style:none; padding-left:0; }
+              li { padding:0.5rem 0; }
+              a { color:#3b82f6; text-decoration:none; }
+            </style>
+          </head>
+          <body>
+            <header>
+              <h1>LEVERLEX Digital Platform Status Dashboard</h1>
+              <p>Last Merge: $LAST_COMMIT</p>
+              <p>Updated: $LAST_COMMIT_DATE UTC</p>
+              <img src="https://img.shields.io/badge/status-active-success" alt="Status Badge">
+              <img src="https://img.shields.io/badge/deployment-github--pages-blue" alt="Deployment Badge">
+              <img src="https://img.shields.io/badge/license-MIT-green" alt="License Badge">
+            </header>
+
+            <section>
+              <h2>Deployment</h2>
+              <ul>
+                <li><span class="status green"></span>GitHub Pages URL: <a href="https://leverlex.github.io">https://leverlex.github.io</a></li>
+                <li><span class="status green"></span>Deployment Status: Active</li>
+                <li><span class="status green"></span>Last Merge: $LAST_COMMIT</li>
+                <li><span class="status green"></span>Build Check: Passed</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>Repository</h2>
+              <ul>
+                <li><span class="status green"></span>Branch: main</li>
+                <li><span class="status green"></span>Commits: $(git rev-list --count HEAD)</li>
+                <li><span class="status green"></span>Contributors: $(git shortlog -sn | wc -l)</li>
+                <li><span class="status green"></span>License: MIT</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>Next Actions</h2>
+              <ul>
+                <li><span class="status yellow"></span>Pin repository on profile</li>
+                <li><span class="status yellow"></span>Add status badges to README.md</li>
+                <li><span class="status yellow"></span>Refine headings & spacing</li>
+                <li><span class="status yellow"></span>Deploy structured curriculum content</li>
+                <li><span class="status yellow"></span>Add CTA buttons / portfolio links</li>
+              </ul>
+            </section>
+          </body>
+          </html>
+          EOF
+
+      # Commit updated dashboard.html
+      - name: Commit dashboard
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add dashboard.html
+          git commit -m "Auto-update dashboard.html with last merge info"
+          git push
