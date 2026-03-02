@@ -1,0 +1,19 @@
+# Site settings
+title: Leverlexdigitals
+description: Secure legal automation online
+url: "https://leverlex.github.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+theme: null
+
+# SEO settings
+author: Leverlexdigitals
+lang: en
+
+# Exclude from processing
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
