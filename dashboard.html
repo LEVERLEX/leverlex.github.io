@@ -28,7 +28,7 @@
 <header>
   <h1>LEVERLEX Digital Platform Status Dashboard</h1>
   <p>Real-time overview of site, automation, and workflow modules</p>
-  <p style="font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: <span id="last-update">Loading...</span></p>
+  <p style="font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: Add dynamic dashboard modules for repository statistics (#11)_DATE</p>
   <div class="workflow-badges">
     <img src="https://img.shields.io/badge/status-active-success" alt="Status Badge" class="badge">
     <img src="https://img.shields.io/badge/deployment-github--pages-blue" alt="Deployment Badge" class="badge">
@@ -42,7 +42,7 @@
   <ul>
     <li><span class="status green"></span>GitHub Pages URL: <a href="https://leverlex.github.io" target="_blank">https://leverlex.github.io</a></li>
     <li><span class="status green"></span>Deployment Status: Active</li>
-    <li><span class="status green"></span>Last Merge: <span class="stat-value" id="last-commit">Loading...</span></li>
+    <li><span class="status green"></span>Last Merge: <span class="stat-value">Add dynamic dashboard modules for repository statistics (#11)</span></li>
     <li><span class="status green"></span>Build Check: Passed</li>
   </ul>
 </section>
@@ -51,8 +51,8 @@
   <h2>Repository</h2>
   <ul>
     <li><span class="status green"></span>Branch: main</li>
-    <li><span class="status green"></span>Commits: <span class="stat-value" id="commit-count">2</span></li>
-    <li><span class="status green"></span>Contributors: <span class="stat-value" id="contributor-count">2</span></li>
+    <li><span class="status green"></span>Commits: <span class="stat-value" id="commit-count">16</span></li>
+    <li><span class="status green"></span>Contributors: <span class="stat-value" id="contributor-count">3</span></li>
     <li><span class="status green"></span>License: MIT</li>
     <li><span class="status yellow"></span>Pinned: Pending</li>
     <li><span class="status green"></span>Core Files: index.html, _config.yml, robots.txt, sitemap.xml</li>
@@ -62,7 +62,7 @@
 <section>
   <h2>Automation Workflow</h2>
   <ul>
-    <li><span class="status green"></span>Open Pull Requests: <span class="stat-value" id="pr-count">0</span></li>
+    <li><span class="status green"></span>Open Pull Requests: <span class="stat-value" id="pr-count">2</span></li>
     <li><span class="status green"></span>Automation Modules Deployed</li>
     <li><span class="status green"></span>Markdown Formatting Modules Active</li>
     <li><span class="status green"></span>Dashboard Auto-Update: Active</li>
@@ -99,14 +99,14 @@ async function updateStats() {
   
   try {
     // Fetch open PRs
-    const prsResponse = await fetch(`${apiBase}/repos/${repo}/pulls?state=open`);
+    const prsResponse = await fetch(\`\${apiBase}/repos/\${repo}/pulls?state=open\`);
     if (prsResponse.ok) {
       const prs = await prsResponse.json();
       document.getElementById('pr-count').textContent = prs.length;
     }
     
     // Fetch latest commit
-    const commitsResponse = await fetch(`${apiBase}/repos/${repo}/commits?per_page=1`);
+    const commitsResponse = await fetch(\`\${apiBase}/repos/\${repo}/commits?per_page=1\`);
     if (commitsResponse.ok) {
       const commits = await commitsResponse.json();
       if (commits.length > 0) {
@@ -115,7 +115,7 @@ async function updateStats() {
     }
     
     // Fetch contributors count
-    const contributorsResponse = await fetch(`${apiBase}/repos/${repo}/contributors`);
+    const contributorsResponse = await fetch(\`\${apiBase}/repos/\${repo}/contributors\`);
     if (contributorsResponse.ok) {
       const contributors = await contributorsResponse.json();
       document.getElementById('contributor-count').textContent = contributors.length;
