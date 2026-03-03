@@ -92,6 +92,72 @@
       button:hover {
         background-color: #3498db;
       }
+
+      .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .tool-card {
+        background: #ecf0f1;
+        padding: 1rem;
+        border-radius: 6px;
+        border-left: 4px solid #2980b9;
+      }
+
+      .tool-card h3 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .tool-card p {
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .workflow-item {
+        background: #e8f4f8;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .workflow-icon {
+        font-size: 2rem;
+        min-width: 50px;
+        text-align: center;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+
+      .status-active {
+        background-color: #2ecc71;
+        color: white;
+      }
+
+      .status-automated {
+        background-color: #3498db;
+        color: white;
+      }
+
+      .workflow-content {
+        flex: 1;
+      }
+
+      .workflow-description {
+        margin: 0.25rem 0 0 0;
+      }
     </style>
   </head>
   <body>
@@ -103,6 +169,8 @@
     <nav>
       <a href="#about">About</a>
       <a href="#services">Services</a>
+      <a href="#ai-automation">AI & Automation</a>
+      <a href="#workflow-center">Workflow Center</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -123,6 +191,94 @@
           <li>Interactive legal tools for the public</li>
         </ul>
         <button onclick="alert('Coming Soon!')">Explore Services</button>
+      </section>
+
+      <section id="ai-automation">
+        <h2>🤖 AI & Automation Tools</h2>
+        <p>
+          Leverage cutting-edge artificial intelligence and automation to streamline your legal workflows.
+          Our automated tools handle repetitive tasks, reduce errors, and accelerate processing times.
+        </p>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <h3>🔍 Document Analysis</h3>
+            <p>AI-powered document scanning and classification with automated data extraction.</p>
+            <span class="status-badge status-active">Active</span>
+          </div>
+          <div class="tool-card">
+            <h3>✅ Contract Review</h3>
+            <p>Automated contract analysis identifying key clauses and potential issues.</p>
+            <span class="status-badge status-active">Active</span>
+          </div>
+          <div class="tool-card">
+            <h3>📊 Compliance Checker</h3>
+            <p>Intelligent compliance verification against regulatory requirements.</p>
+            <span class="status-badge status-automated">Automated</span>
+          </div>
+          <div class="tool-card">
+            <h3>🔔 Smart Notifications</h3>
+            <p>Automated alerts for deadlines, updates, and critical events.</p>
+            <span class="status-badge status-automated">Automated</span>
+          </div>
+          <div class="tool-card">
+            <h3>📝 Form Generation</h3>
+            <p>AI-assisted legal form creation with intelligent field population.</p>
+            <span class="status-badge status-active">Active</span>
+          </div>
+          <div class="tool-card">
+            <h3>🔒 Security Scanner</h3>
+            <p>Automated security and privacy compliance verification.</p>
+            <span class="status-badge status-automated">Automated</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow-center">
+        <h2>⚙️ Automated Workflow Control Center</h2>
+        <p>
+          Centralized control for all your automated legal workflows. Monitor, manage, and optimize 
+          your automated processes from a single interface.
+        </p>
+        
+        <h3 style="margin-top: 1.5rem;">Active Workflows</h3>
+        
+        <div class="workflow-item">
+          <div class="workflow-icon">📄</div>
+          <div class="workflow-content">
+            <strong>Document Processing Pipeline</strong>
+            <p class="workflow-description">Automated intake, classification, and routing of legal documents.</p>
+          </div>
+          <span class="status-badge status-automated">Running</span>
+        </div>
+
+        <div class="workflow-item">
+          <div class="workflow-icon">🔄</div>
+          <div class="workflow-content">
+            <strong>Case Management Automation</strong>
+            <p class="workflow-description">Automated case tracking, updates, and stakeholder notifications.</p>
+          </div>
+          <span class="status-badge status-automated">Running</span>
+        </div>
+
+        <div class="workflow-item">
+          <div class="workflow-icon">📋</div>
+          <div class="workflow-content">
+            <strong>Compliance Monitoring</strong>
+            <p class="workflow-description">Continuous automated compliance checking and reporting.</p>
+          </div>
+          <span class="status-badge status-automated">Running</span>
+        </div>
+
+        <div class="workflow-item">
+          <div class="workflow-icon">⏰</div>
+          <div class="workflow-content">
+            <strong>Deadline Management</strong>
+            <p class="workflow-description">Automated deadline tracking with proactive reminders and escalations.</p>
+          </div>
+          <span class="status-badge status-automated">Running</span>
+        </div>
+
+        <button onclick="alert('Workflow control panel coming soon! This will provide detailed monitoring and configuration options.')">Open Control Panel</button>
       </section>
 
       <section id="contact">
