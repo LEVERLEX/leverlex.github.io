@@ -1,0 +1,217 @@
+name: Update Dashboard
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Fetch repository statistics
+      - name: Get repository stats
+        id: repo_stats
+        run: |
+          echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
+          echo "CONTRIBUTOR_COUNT=$(git shortlog -sn --all | wc -l)" >> $GITHUB_ENV
+          echo "LAST_COMMIT=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_ENV
+
+      # Fetch PR count using GitHub API
+      - name: Get PR count
+        id: pr_stats
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          OPEN_PRS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open" | \
+            jq '. | length')
+          echo "OPEN_PR_COUNT=$OPEN_PRS" >> $GITHUB_ENV
+
+      # Generate updated dashboard.html
+      - name: Update dashboard
+        run: |
+          cat > dashboard.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>LEVERLEX Status Dashboard</title>
+            <style>
+              body { font-family: 'Roboto', sans-serif; background: #f9f9f9; margin: 0; padding: 0; }
+              header { background: #1f2937; color: #fff; padding: 2rem; text-align: center; }
+              header h1 { margin: 0; font-size: 2rem; }
+              header p { font-size: 1rem; margin-top: 0.5rem; }
+              section { padding: 2rem; margin: 1rem auto; max-width: 900px; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+              h2 { border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; color: #111827; }
+              ul { list-style: none; padding-left: 0; }
+              li { padding: 0.5rem 0; }
+              .status { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 0.5rem; }
+              .green { background: #16a34a; }
+              .yellow { background: #facc15; }
+              .red { background: #dc2626; }
+              .badge { display: inline-block; margin-right: 0.5rem; vertical-align: middle; }
+              a { color: #3b82f6; text-decoration: none; }
+              .stat-value { font-weight: bold; color: #111827; }
+              .workflow-badges { margin-top: 1rem; }
+            </style>
+          </head>
+          <body>
+
+          <header>
+            <h1>LEVERLEX Digital Platform Status Dashboard</h1>
+            <p>Real-time overview of site, automation, and workflow modules</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: $LAST_COMMIT_DATE</p>
+            <div class="workflow-badges">
+              <img src="https://img.shields.io/badge/status-active-success" alt="Status Badge" class="badge">
+              <img src="https://img.shields.io/badge/deployment-github--pages-blue" alt="Deployment Badge" class="badge">
+              <img src="https://img.shields.io/badge/license-MIT-green" alt="License Badge" class="badge">
+              <img src="https://github.com/${{ github.repository }}/actions/workflows/update-dashboard.yml/badge.svg" alt="Dashboard Update Workflow" class="badge">
+            </div>
+          </header>
+
+          <section>
+            <h2>Deployment</h2>
+            <ul>
+              <li><span class="status green"></span>GitHub Pages URL: <a href="https://leverlex.github.io" target="_blank">https://leverlex.github.io</a></li>
+              <li><span class="status green"></span>Deployment Status: Active</li>
+              <li><span class="status green"></span>Last Merge: <span class="stat-value">$LAST_COMMIT</span></li>
+              <li><span class="status green"></span>Build Check: Passed</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Repository</h2>
+            <ul>
+              <li><span class="status green"></span>Branch: main</li>
+              <li><span class="status green"></span>Commits: <span class="stat-value" id="commit-count">$COMMIT_COUNT</span></li>
+              <li><span class="status green"></span>Contributors: <span class="stat-value" id="contributor-count">$CONTRIBUTOR_COUNT</span></li>
+              <li><span class="status green"></span>License: MIT</li>
+              <li><span class="status yellow"></span>Pinned: Pending</li>
+              <li><span class="status green"></span>Core Files: index.html, _config.yml, robots.txt, sitemap.xml</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Automation Workflow</h2>
+            <ul>
+              <li><span class="status green"></span>Open Pull Requests: <span class="stat-value" id="pr-count">$OPEN_PR_COUNT</span></li>
+              <li><span class="status green"></span>Automation Modules Deployed</li>
+              <li><span class="status green"></span>Markdown Formatting Modules Active</li>
+              <li><span class="status green"></span>Dashboard Auto-Update: Active</li>
+              <li><span class="status yellow"></span>Workflow ready for CI/CD integration</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Content & Frontend</h2>
+            <ul>
+              <li><span class="status green"></span>Hero Banner Configured</li>
+              <li><span class="status yellow"></span>Section Hierarchy: Needs Refinement</li>
+              <li><span class="status yellow"></span>Typography Hierarchy Pending</li>
+              <li><span class="status yellow"></span>Section Spacing & Layout Pending</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Next Actions</h2>
+            <ul>
+              <li><span class="status yellow"></span>Pin repository on profile</li>
+              <li><span class="status yellow"></span>Add status badges to README.md</li>
+              <li><span class="status yellow"></span>Refine headings & spacing</li>
+              <li><span class="status yellow"></span>Deploy structured curriculum content</li>
+              <li><span class="status yellow"></span>Add CTA buttons / portfolio links</li>
+            </ul>
+          </section>
+
+          <script>
+          // Client-side real-time updates using GitHub API
+          async function updateStats() {
+            const repo = '${{ github.repository }}';
+            const apiBase = 'https://api.github.com';
+            
+            try {
+              // Fetch open PRs
+              const prsResponse = await fetch(\`\${apiBase}/repos/\${repo}/pulls?state=open\`);
+              if (prsResponse.ok) {
+                const prs = await prsResponse.json();
+                document.getElementById('pr-count').textContent = prs.length;
+              }
+              
+              // Fetch latest commit
+              const commitsResponse = await fetch(\`\${apiBase}/repos/\${repo}/commits?per_page=1\`);
+              if (commitsResponse.ok) {
+                const commits = await commitsResponse.json();
+                if (commits.length > 0) {
+                  document.getElementById('last-commit').textContent = commits[0].commit.message;
+                }
+              }
+              
+              // Fetch contributors count
+              const contributorsResponse = await fetch(\`\${apiBase}/repos/\${repo}/contributors\`);
+              if (contributorsResponse.ok) {
+                const contributors = await contributorsResponse.json();
+                document.getElementById('contributor-count').textContent = contributors.length;
+              }
+              
+              // Update last update time
+              const lastUpdate = new Date().toUTCString();
+              document.getElementById('last-update').textContent = lastUpdate;
+              
+            } catch (error) {
+              console.error('Stats update error:', error);
+              // Silently fail - use server-rendered values
+              if (document.getElementById('last-update').textContent === 'Loading...') {
+                document.getElementById('last-update').textContent = new Date().toUTCString();
+              }
+            }
+          }
+          
+          // Update stats on page load
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateStats);
+          } else {
+            updateStats();
+          }
+          
+          // Refresh stats every 30 minutes to avoid rate limiting
+          setInterval(updateStats, 30 * 60 * 1000);
+          </script>
+
+          </body>
+          </html>
+          EOF
+          
+          # Replace environment variables
+          sed -i "s/\$COMMIT_COUNT/$COMMIT_COUNT/g" dashboard.html
+          sed -i "s/\$CONTRIBUTOR_COUNT/$CONTRIBUTOR_COUNT/g" dashboard.html
+          sed -i "s/\$OPEN_PR_COUNT/$OPEN_PR_COUNT/g" dashboard.html
+          sed -i "s/\$LAST_COMMIT/$LAST_COMMIT/g" dashboard.html
+          sed -i "s/\$LAST_COMMIT_DATE/$LAST_COMMIT_DATE/g" dashboard.html
+
+      # Commit updated dashboard.html
+      - name: Commit dashboard changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add dashboard.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update dashboard with latest stats [skip ci]"
+            git push
+          fi
