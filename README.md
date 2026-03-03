@@ -1,7 +1,7 @@
 ## Dashboard Summary & Status
 
 <details>
-<summary>Click to expand overview</summary>
+<summary>Click to expand preview</summary>
 
 Complete overhaul of `dashboard.html` for LEVERLEX GitHub Pages:
 
@@ -16,16 +16,16 @@ Complete overhaul of `dashboard.html` for LEVERLEX GitHub Pages:
 ### Current Progress
 - [x] Backup legacy dashboard  
 - [x] Merge mandatory content  
-- [ ] Implement dynamic automation modules  
-- [ ] Apply responsive layout and formatting  
-- [ ] Test workflow triggers and live updates  
+- [x] Implement dynamic automation modules  
+- [x] Apply responsive layout and formatting  
+- [x] Test workflow triggers and live updates  
 
 ### Live Status Badges
 ![Open PRs](https://img.shields.io/github/issues-pr/LEVERLEX/leverlex.github.io)  
 ![Commits](https://img.shields.io/github/commit-activity/m/LEVERLEX/leverlex.github.io)  
 ![Contributors](https://img.shields.io/github/contributors/LEVERLEX/leverlex.github.io)  
 ![Workflow Status](https://img.shields.io/github/workflow/status/LEVERLEX/leverlex.github.io/Update-Dashboard)
-## Overview
+## preview
 Complete overhaul of `dashboard.html` for LEVERLEX GitHub Pages:  
 Merges legacy content, upgrades HTML structure, integrates automation modules, implements markdown formatting, and embeds external resources.
 
@@ -34,30 +34,30 @@ Merges legacy content, upgrades HTML structure, integrates automation modules, i
 ## Tasks / Progress
 
 ### 1️⃣ Merge Old Dashboard Content
-- [ ] Backup legacy `dashboard.html` as `dashboard-old.html`
-- [ ] Migrate all mandatory sections (Project Info, Efforts, CTA, embedded Docs/Slides/Forms)
-- [ ] Verify headings, fonts, spacing, and responsive layout
+- [x] Backup legacy `dashboard.html` as `dashboard-old.html`
+- [x] Migrate all mandatory sections (Project Info, Efforts, CTA, embedded Docs/Slides/Forms)
+- [x] Verify headings, fonts, spacing, and responsive layout
 
 ### 2️⃣ Dynamic Automation Modules
-- [ ] Pull Requests Count: `GET /repos/{repo}/pulls?state=open`
-- [ ] Total Commits: `git rev-list --count HEAD`
-- [ ] Contributors: `GET /repos/{repo}/contributors`
-- [ ] Workflow Status Badge: `actions/workflows/update-dashboard.yml/badge.svg`
-- [ ] Client-side JS fetches real-time stats every 30 minutes
-- [ ] GitHub Actions workflow auto-updates dashboard on push, schedule, or manual trigger
-- [ ] Graceful fallback to workflow-generated values if API fails
+- [x] Pull Requests Count: `GET /repos/{repo}/pulls?state=open`
+- [x] Total Commits: `git rev-list --count HEAD`
+- [x] Contributors: `GET /repos/{repo}/contributors`
+- [x] Workflow Status Badge: `actions/workflows/update-dashboard.yml/badge.svg`
+- [x] Client-side JS fetches real-time stats every 30 minutes
+- [x] GitHub Actions workflow auto-updates dashboard on push, schedule, or manual trigger
+- [x] Graceful fallback to workflow-generated values if API fails
 
 ### 3️⃣ Markdown & Formatting Enhancements
-- [ ] Standardize font pairing and paragraph spacing (before: 6px, after: 12px)
-- [ ] Correct H1–H4 heading hierarchy
-- [ ] Responsive layout for mobile, tablet, and desktop
-- [ ] Embed external resources (Docs, Slides, Forms, YouTube, Maps) using iframes
+- [x] Standardize font pairing and paragraph spacing (before: 6px, after: 12px)
+- [x] Correct H1–H4 heading hierarchy
+- [x] Responsive layout for mobile, tablet, and desktop
+- [x] Embed external resources (Docs, Slides, Forms, YouTube, Maps) using iframes
 
 ### 4️⃣ Testing & Validation
-- [ ] Verify all dynamic modules display correct values
-- [ ] Dashboard fully loads on GitHub Pages
-- [ ] Automation workflow triggers correctly and commits updates
-- [ ] Confirm all mandatory content preserved
+- [x] Verify all dynamic modules display correct values
+- [x] Dashboard fully loads on GitHub Pages
+- [x] Automation workflow triggers correctly and commits updates
+- [x] Confirm all mandatory content preserved
 
 ---
 
