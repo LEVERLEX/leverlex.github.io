@@ -1,3 +1,30 @@
+## Dashboard Summary & Status
+
+<details>
+<summary>Click to expand overview</summary>
+
+Complete overhaul of `dashboard.html` for LEVERLEX GitHub Pages:
+
+- ✅ Merges legacy content into new template  
+- ⚡ Upgrades HTML structure with responsive layout  
+- 🤖 Integrates automation modules (PRs, commits, contributors, workflow badges)  
+- 📝 Implements Markdown formatting and standardized font/spacing  
+- 🌐 Embeds external resources (Docs, Slides, Forms, YouTube, Maps)  
+
+</details>
+
+### Current Progress
+- [x] Backup legacy dashboard  
+- [x] Merge mandatory content  
+- [ ] Implement dynamic automation modules  
+- [ ] Apply responsive layout and formatting  
+- [ ] Test workflow triggers and live updates  
+
+### Live Status Badges
+![Open PRs](https://img.shields.io/github/issues-pr/LEVERLEX/leverlex.github.io)  
+![Commits](https://img.shields.io/github/commit-activity/m/LEVERLEX/leverlex.github.io)  
+![Contributors](https://img.shields.io/github/contributors/LEVERLEX/leverlex.github.io)  
+![Workflow Status](https://img.shields.io/github/workflow/status/LEVERLEX/leverlex.github.io/Update-Dashboard)
 ## Overview
 Complete overhaul of `dashboard.html` for LEVERLEX GitHub Pages:  
 Merges legacy content, upgrades HTML structure, integrates automation modules, implements markdown formatting, and embeds external resources.
