@@ -1,0 +1,112 @@
+name: Leverlex Autopush Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autopush-main
+  cancel-in-progress: true
+
+jobs:
+
+  autopush:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Checkout repository
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Configure Git identity
+    - name: Configure Git
+      run: |
+        git config user.name "Leverlex Automation"
+        git config user.email "cleverlexdigitals@gmail.com"
+
+    # Fetch tags
+    - name: Fetch tags
+      run: git fetch --tags --force
+
+    # Detect repository changes
+    - name: Detect changes
+      id: changes
+      run: |
+        if [[ -n "$(git status --porcelain)" ]]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+
+    # Generate commit history log
+    - name: Update commit log
+      run: |
+        git log --pretty=format:"%h - %s (%ci)" -20 > COMMITS.md
+        git add COMMITS.md
+        git commit -m "docs: update commit log" || true
+
+    # Update changelog using real commit data
+    - name: Update changelog
+      run: |
+        DATE=$(date "+%Y-%m-%d %H:%M:%S")
+
+        echo "" >> CHANGELOG.md
+        echo "## Update $DATE" >> CHANGELOG.md
+        git log -5 --pretty=format:"- %s" >> CHANGELOG.md
+
+        git add CHANGELOG.md
+        git commit -m "docs: update changelog" || true
+
+    # Semantic version bump
+    - name: Increment version
+      run: |
+
+        VERSION_FILE="VERSION"
+
+        if [ ! -f "$VERSION_FILE" ]; then
+          echo "1.0.0" > $VERSION_FILE
+        fi
+
+        CURRENT=$(cat $VERSION_FILE)
+
+        IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+
+        PATCH=$((PATCH+1))
+
+        NEW="$MAJOR.$MINOR.$PATCH"
+
+        echo "$NEW" > $VERSION_FILE
+
+        git add VERSION
+        git commit -m "release: v$NEW" || true
+
+        git tag -a "v$NEW" -m "Release v$NEW" || true
+
+    # Push changes
+    - name: Push updates
+      run: |
+        git push origin main --follow-tags
+
+    # Output repository summary
+    - name: Workflow report
+      run: |
+        echo "Repository Status"
+        git status
+
+        echo ""
+        echo "Latest commit"
+        git log -1
+
+        echo ""
+        echo "Recent commits"
+        git log --oneline -10
