@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyProject AutoPush Dashboard</title>
+<style>
+body { font-family:sans-serif; margin:2rem; background:#f4f4f9; color:#333; }
+h1 { color:#2c3e50; }
+section { margin-bottom:2rem; }
+pre { background:#ecf0f1; padding:1rem; border-radius:5px; overflow-x:auto; }
+button { padding:0.5rem 1rem; margin-top:0.5rem; cursor:pointer; }
+button:disabled { background:#ccc; cursor:not-allowed; }
+.status { display:inline-block; margin-left:0.5rem; }
+</style>
+</head>
+<body>
+
+<h1>MyProject AutoPush Dashboard</h1>
+
+<section>
+<h2>Version</h2>
+<pre id="version">Loading...</pre>
+</section>
+
+<section>
+<h2>Recent Commits</h2>
+<pre id="commits">Loading...</pre>
+</section>
+
+<section>
+<h2>Last Push</h2>
+<pre id="last-push">Loading...</pre>
+</section>
+
+<section>
+<h2>Control</h2>
+<button id="trigger">Trigger AutoPush</button>
+<span id="trigger-status" class="status"></span>
+</section>
+
+<script>
+async function loadData() {
+    try {
+        document.getElementById('version').textContent = await fetch('version.txt').then(r=>r.text());
+        document.getElementById('commits').textContent = await fetch('commits.txt').then(r=>r.text());
+        document.getElementById('last-push').textContent = await fetch('push.log').then(r=>r.text());
+    } catch(e) {
+        console.error("Error loading data", e);
+    }
+}
+
+// Trigger autopush via GitHub Actions repository_dispatch
+async function triggerAutopush() {
+    const btn = document.getElementById('trigger');
+    const status = document.getElementById('trigger-status');
+    btn.disabled = true;
+    status.textContent = 'Running...';
+
+    try {
+        const res = await fetch('https://api.github.com/repos/LEVERLEX/myproject/dispatches', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/vnd.github+json',
+                'Authorization': 'token YOUR_PERSONAL_ACCESS_TOKEN'
+            },
+            body: JSON.stringify({
+                event_type: "secure-trigger",
+                client_payload: { secret: "PRIVATE_CODE_SECRET" }
+            })
+        });
+        if (res.ok) {
+            status.textContent = 'Triggered ✅';
+        } else {
+            const txt = await res.text();
+            status.textContent = 'Failed ❌';
+            console.error(txt);
+        }
+    } catch(err) {
+        console.error(err);
+        status.textContent = 'Error ❌';
+    } finally {
+        btn.disabled = false;
+        loadData(); // refresh dashboard
+    }
+}
+
+document.getElementById('trigger').addEventListener('click', triggerAutopush);
+loadData();
+</script>
+
+</body>
+</html>
