@@ -36,11 +36,11 @@ Complete overhaul of `dashboard.html` for **LEVERLEX GitHub Pages**:
 
 | Metric | Status |
 |--------|--------|
-| Latest Release | ![Version](https://img.shields.io/github/v/release/LEVERLEX/myproject?label=Release&style=flat-square) |
-| Last Push | ![Push](https://img.shields.io/github/last-commit/LEVERLEX/myproject?style=flat-square) |
+| Latest Release | [Version](https://img.shields.io/github/v/release/LEVERLEX/myproject?label=Release&style=flat-square) |
+| Last Push | [Push](https://img.shields.io/github/last-commit/LEVERLEX/myproject?style=flat-square) |
 | Open PRs | ![Open PRs](https://img.shields.io/github/issues-pr/LEVERLEX/myproject?style=flat-square) |
-| Workflow Status | ![CI](https://github.com/LEVERLEX/myproject/actions/workflows/dashboard-update.yml/badge.svg?style=flat-square) |
-| Contributors | ![Contributors](https://img.shields.io/github/contributors/LEVERLEX/myproject?style=flat-square) |
+| Workflow Status | [CI](https://github.com/LEVERLEX/myproject/actions/workflows/dashboard-update.yml/badge.svg?style=flat-square) |
+| Contributors | [Contributors](https://img.shields.io/github/contributors/LEVERLEX/myproject?style=flat-square) |
 
 ### 📝 Notes
 
