@@ -28,15 +28,12 @@ jobs:
           echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
           echo "CONTRIBUTOR_COUNT=$(git shortlog -sn --all | wc -l)" >> $GITHUB_ENV
           echo "LAST_COMMIT=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
-          echo "LAST_COMMIT_DATE=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_ENV
-
-      # Fetch PR count using GitHub API
-      - name: Get PR count
+          echo "LAST_COMMIT_DATE=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_ENVE
         id: pr_stats
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.[termux-LEVERLEX }}
         run: |
-          OPEN_PRS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          OPEN_PRS=$(curl -s -H "Authorization: token $termux-LEVERLEX" \
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open" | \
             jq '. | length')
           echo "OPEN_PR_COUNT=$OPEN_PRS" >> $GITHUB_ENV
