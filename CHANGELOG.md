@@ -47,3 +47,9 @@
 - release: v1.0.7
 - docs: update changelog
 - docs: update commit log
+## Update 2026-03-12 23:53:29
+- docs: update commit log
+- release: v1.0.8
+- docs: update changelog
+- docs: update commit log
+- Update README.md
