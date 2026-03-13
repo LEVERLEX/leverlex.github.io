@@ -53,3 +53,9 @@
 - docs: update changelog
 - docs: update commit log
 - Update README.md
+## Update 2026-03-13 23:31:29
+- docs: update commit log
+- release: v1.0.9
+- docs: update changelog
+- docs: update commit log
+- release: v1.0.8
