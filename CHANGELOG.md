@@ -59,3 +59,9 @@
 - docs: update changelog
 - docs: update commit log
 - release: v1.0.8
+## Update 2026-03-14 23:31:12
+- docs: update commit log
+- release: v1.0.10
+- docs: update changelog
+- docs: update commit log
+- release: v1.0.9
