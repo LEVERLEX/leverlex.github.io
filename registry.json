@@ -1,0 +1,27 @@
+{
+  "packages": {
+    "god-core-plugin": {
+      "versions": {
+        "1.0.0": {
+          "url": "https://example.com/packages/god-core-plugin-1.0.0.zip",
+          "dependencies": [],
+          "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "1.1.0": {
+          "url": "https://example.com/packages/god-core-plugin-1.1.0.zip",
+          "dependencies": ["libA>=2.0.0"],
+          "checksum": "abc123def4567890abcdef1234567890abcdef1234567890abcdef1234567890"
+        }
+      }
+    },
+    "libA": {
+      "versions": {
+        "2.0.0": {
+          "url": "https://example.com/packages/libA-2.0.0.zip",
+          "dependencies": [],
+          "checksum": "123456abcdef123456abcdef123456abcdef123456abcdef123456abcdef123456"
+        }
+      }
+    }
+  }
+}
